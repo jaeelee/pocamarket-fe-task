@@ -6,6 +6,7 @@ import { getPaginatedCard } from "./_libs/getPaginatedCard";
 import { Card } from "./_libs/card.type";
 import { useEffect, useState } from "react";
 import Modal from "./Modal";
+import { useShoppingList } from "./_libs/shopping.store";
 
 export function Home() {
   /**
@@ -17,6 +18,7 @@ export function Home() {
   const [selectedGroup, setSelectedGroup] = useState<string | undefined>(undefined);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState<Card>();
+  const { addList } = useShoppingList();
 
   useEffect(() => {
     const fetchCards = async () => {
@@ -115,7 +117,7 @@ export function Home() {
                 <div className="flex gap-2"><ThumbsUpIcon fill={selectedCard?.bestPick ? 'pink' : 'white'} />best</div>
                 <div className="flex gap-2"><HeartIcon />{selectedCard?.wishCount}</div>
               </div>
-              <div className="flex gap-2 justify-end mt-3"><ShoppingCartIcon />장바구니 담기</div>
+              <div className="flex gap-2 justify-end mt-3" onClick={() => addList(selectedCard!)}><ShoppingCartIcon />장바구니 담기</div>
             </div>
           </div>
         </div>
