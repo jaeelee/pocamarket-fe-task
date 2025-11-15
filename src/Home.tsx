@@ -25,7 +25,7 @@ export function Home() {
         nextPage,
         items,
         totalPages: fetchedTotalPages
-      } = await getPaginatedCard(currentPage, 5);
+      } = await getPaginatedCard(currentPage, 10);
       setCurrentPage(fetchedCurrentPage);
       setTotalPages(fetchedTotalPages);
       setCards(items);
@@ -51,8 +51,8 @@ export function Home() {
             </Link>
           }
         />
-        <div className="flex">
-          <nav className="w-1/4 bg-gray-100 pt-4 sticky h-[calc(100vh-60px)] top-15">
+        <div className="md:flex">
+          <nav className="md:w-1/4 bg-gray-100 pt-4 sticky md:h-[calc(100vh-60px)] top-15 pb-4">
             <div className="flex flex-col gap-2">
               {TYPE_DATA.map((type) => (
                 <button
@@ -65,8 +65,8 @@ export function Home() {
               ))}
             </div>
           </nav>
-          <section className="flex-1 px-4 py-4">
-            <div className="grid grid-cols-4 gap-4">
+          <section className="md:flex-1 px-4 py-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
               {cards.filter(item => selectedGroup ? item.groupName.includes(selectedGroup) : item).map((item, index) => (
                 <div key={`${index}`} onClick={() => {
                   setSelectedCard(item);
