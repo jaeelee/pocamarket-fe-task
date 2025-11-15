@@ -2,16 +2,36 @@ import { Header } from "./_components/Header";
 import { ShoppingCartIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { TYPE_DATA } from "./_libs/type.data";
-import { DATA } from "./_libs/card.data";
+import { getPaginatedCard } from "./_libs/getPaginatedCard";
+import { Card } from "./_libs/card.type";
+import { useEffect, useState } from "react";
 
 export function Home() {
   /**
    * @todo DATA 데이터를 바로 사용하지 않고 ../_libs/getPaginatedCard 함수를 사용하여 페이지네이션 처리
    */
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const [cards, setCards] = useState<Card[]>([]);
 
-  const currentPage = 1; // 현재 페이지 Example: 1
-  const totalPages = 10; // 전체 페이지 Example: 10
-  const exmpleCardImage = "https://placeholderjs.com/400x400";
+  useEffect(() => {
+    const fetchCards = async () => {
+
+      const { currentPage: fetchedCurrentPage, nextPage, items, totalPages: fetchedTotalPages } = await getPaginatedCard(currentPage, 5);
+      setCurrentPage(fetchedCurrentPage);
+      setTotalPages(fetchedTotalPages);
+      setCards(items);
+    };
+    fetchCards();
+  }, [currentPage]);
+
+  const handleNextPage = () => {
+    setCurrentPage(currentPage + 1);
+  };
+
+  const handlePreviousPage = () => {
+    setCurrentPage(currentPage - 1);
+  };
 
   return (
     <div>
@@ -37,14 +57,20 @@ export function Home() {
         </nav>
         <section className="flex-1 px-4 py-4">
           <div className="grid grid-cols-4 gap-4">
-            {DATA.map((item, index) => (
+            {cards.map((item, index) => (
               <div key={`${index}`}>
-                <h2 className="text-lg font-semibold">{item.name}</h2>
+                <h2 className="text-lg font-semibold">{item.name} ({item.memberName})</h2>
+                <p className="text-sm text-gray-500">{item.groupName}</p>
                 <img
-                  src={exmpleCardImage}
+                  src={item.image}
                   alt={item.name}
                   className="w-full h-auto rounded-md"
                 />
+                <div className="flex flex-row gap-1 items-">
+                  <p className="text-lg font-semibold text-red-400">{Math.round(item.discountRate * 100)}%</p>
+                  <p className="text-lg font-semibold text-gray-500">{item.discountedPrice} USD</p>
+                  <p className="text-sm font-semibold text-gray-500 line-through">{item.price} USD</p>
+                </div>
               </div>
             ))}
           </div>
