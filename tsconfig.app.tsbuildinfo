@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/cart.tsx","./src/home.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/_components/header.tsx","./src/_libs/card.data.ts","./src/_libs/card.type.ts","./src/_libs/getpaginatedcard.ts","./src/_libs/type.data.ts"],"version":"5.6.3"}
