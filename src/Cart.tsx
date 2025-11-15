@@ -41,7 +41,7 @@ export function Cart() {
             선택 제거
           </button>
         </div>
-        <div className="flex">
+        <div className="flex flex-col md:flex-row">
           <section className="flex flex-1 flex-col p-4">
             {exampleCartItems.map((item) => (
               <div
@@ -60,7 +60,7 @@ export function Cart() {
               </div>
             ))}
           </section>
-          <nav className="w-1/3 flex flex-col gap-8 justify-center items-center p-4 border-l border-gray-100">
+          <nav className="md:w-1/3 flex flex-col gap-8 justify-center items-center p-4 border-l border-gray-100">
             <h2 className="text-lg font-bold">결제금액</h2>
             <div className="w-full flex flex-col gap-1">
               <p className="flex justify-between">
