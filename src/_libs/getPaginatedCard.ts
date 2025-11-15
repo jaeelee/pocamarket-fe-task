@@ -27,10 +27,11 @@ const NETWORK_DELAY = 1000;
 
 export async function getPaginatedCard(
   page: number,
-  itemsPerPage: number
+  itemsPerPage: number,
 ): Promise<PaginatedResult> {
   return new Promise((resolve) => {
     setTimeout(() => {
+
       const startIndex = (page - 1) * itemsPerPage;
       const endIndex = startIndex + itemsPerPage;
       const paginatedData = DATA.slice(startIndex, endIndex);

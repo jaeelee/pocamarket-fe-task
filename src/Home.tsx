@@ -13,17 +13,22 @@ export function Home() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [cards, setCards] = useState<Card[]>([]);
+  const [selectedGroup, setSelectedGroup] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     const fetchCards = async () => {
-
-      const { currentPage: fetchedCurrentPage, nextPage, items, totalPages: fetchedTotalPages } = await getPaginatedCard(currentPage, 5);
+      const {
+        currentPage: fetchedCurrentPage,
+        nextPage,
+        items,
+        totalPages: fetchedTotalPages
+      } = await getPaginatedCard(currentPage, 5);
       setCurrentPage(fetchedCurrentPage);
       setTotalPages(fetchedTotalPages);
       setCards(items);
     };
     fetchCards();
-  }, [currentPage]);
+  }, [currentPage, selectedGroup]);
 
   const handleNextPage = () => {
     setCurrentPage(currentPage + 1);
@@ -43,12 +48,13 @@ export function Home() {
         }
       />
       <div className="flex">
-        <nav className="w-1/4 bg-gray-100 pt-4">
+        <nav className="w-1/4 bg-gray-100 pt-4 sticky h-[calc(100vh-60px)] top-15">
           <div className="flex flex-col gap-2">
             {TYPE_DATA.map((type) => (
               <button
                 key={`type-${type}`}
-                className="text-sm text-gray-500 hover:text-blue-500 w-full"
+                className={`text-sm hover:text-blue-500 w-full ${selectedGroup === type ? 'text-blue-500' : 'text-gray-500'} `}
+                onClick={() => setSelectedGroup(prev => prev === type ? undefined : type)}
               >
                 {type}
               </button>
@@ -57,7 +63,7 @@ export function Home() {
         </nav>
         <section className="flex-1 px-4 py-4">
           <div className="grid grid-cols-4 gap-4">
-            {cards.map((item, index) => (
+            {cards.filter(item => selectedGroup ? item.groupName.includes(selectedGroup) : item).map((item, index) => (
               <div key={`${index}`}>
                 <h2 className="text-lg font-semibold">{item.name} ({item.memberName})</h2>
                 <p className="text-sm text-gray-500">{item.groupName}</p>
